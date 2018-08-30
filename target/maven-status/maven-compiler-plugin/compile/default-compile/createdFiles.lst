@@ -1,0 +1,7 @@
+mypackage\Address.class
+mypackage\Account.class
+mypackage\AccountRepository.class
+mypackage\SpringSecurityConfig.class
+mypackage\Controller.class
+mypackage\MainApplicationClass.class
+mypackage\AuthentificationEntryPoint.class

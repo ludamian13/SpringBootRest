@@ -1,30 +1,24 @@
 package restApi.Test;
 
-import static com.jayway.restassured.RestAssured.basic;
-import static com.jayway.restassured.RestAssured.expect;
-import static com.jayway.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.containsString;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.containsString;
 
-import com.jayway.restassured.RestAssured;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.context.embedded.LocalServerPort;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import org.junit.Test;
 
 public class AccountTest {
 
     @Test
-    public void UnauthorizedAccess() {
+    public void makeSureThatGoogleIsUp() {
+        given().when().get("http://www.google.com").then().statusCode(200);
+    }
+
+    @Test
+    public void unauthorizedAccess() {
         given().when().get("/accounts").then().statusCode(401);
     }
 
     @Test
-    public void AuthorizedAccess() {
+    public void authorizedAccess() {
         given()
                 .auth().basic("john123", "password")
                 .expect()
@@ -49,5 +43,13 @@ public class AccountTest {
                 .queryParam("state", "state8")
                 .when().put("/account").then()
                 .statusCode(200);
+    }
+
+    @Test
+    public void verifyGetUserWithANonExistentId() {
+        given().auth().basic("john123", "password")
+                .queryParam("accountId", "-1")
+                .when().get("/account").then()
+                .body(containsString("No account found"));
     }
 }

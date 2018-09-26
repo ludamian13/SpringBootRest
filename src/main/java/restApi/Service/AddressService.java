@@ -1,5 +1,7 @@
 package restApi.Service;
 
+import restApi.Exceptions.NotFoundException;
+import restApi.Model.Account;
 import restApi.Model.Address;
 import restApi.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +19,9 @@ public class AddressService {
         return addressRepository.findAll();
     }
 
-    public Address show(int accountId) {
-        return addressRepository.findOne(accountId);
+    public Address show(int addressId) {
+        Address address = addressRepository.findOne(addressId);
+        return addressRepository.findOne(addressId);
     }
 
     public Address create(String street, String city, String state) {
@@ -27,6 +30,7 @@ public class AddressService {
 
     public Address update(int addressId, String street, String city, String state) {
         Address address = addressRepository.findOne(addressId);
+
         address.setStreet(street);
         address.setCity(city);
         address.setState(state);
@@ -34,8 +38,14 @@ public class AddressService {
     }
 
     public boolean delete(int addressId) {
+        Address address = addressRepository.findOne(addressId);
         addressRepository.delete(addressId);
         return true;
     }
 
+    private void verifyAddress(Address address) {
+        if (address == null) {
+            throw new NotFoundException("No address found with this id");
+        }
+    }
 }

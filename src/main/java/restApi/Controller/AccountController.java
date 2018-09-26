@@ -23,17 +23,17 @@ public class AccountController {
         return accountService.show(accountId);
     }
 
-    @RequestMapping(value = "/account", method = RequestMethod.PUT)
+    @RequestMapping(value = "/account", method = RequestMethod.POST)
     public Account create(@RequestParam("name") String name, @RequestParam("email") String email, @RequestParam("street") String street, @RequestParam("city") String city, @RequestParam("state") String state) {
         return accountService.create(name, email, street, city, state);
     }
 
-    @RequestMapping(value = "/account", method = RequestMethod.POST)
+    @RequestMapping(value = "/account", method = RequestMethod.PUT)
     public Account update(@RequestParam int accountId, @RequestParam("name") String name, @RequestParam("email") String email) {
         return accountService.update(accountId, name, email);
     }
 
-    @RequestMapping(value = "/account/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/account", method = RequestMethod.DELETE)
     public boolean delete(@RequestParam int accountId) {
         return accountService.delete(accountId);
     }

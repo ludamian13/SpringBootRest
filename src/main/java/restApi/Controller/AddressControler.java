@@ -14,7 +14,7 @@ public class AddressControler {
     @Autowired
     AddressService addressService;
 
-    @GetMapping("/address")
+    @GetMapping("/addresses")
     public List<Address> find() {
         return addressService.find();
     }
@@ -29,12 +29,12 @@ public class AddressControler {
         return addressService.create(street, city, state);
     }
 
-    @RequestMapping(value = "/product", method = RequestMethod.POST)
+    @RequestMapping(value = "/address", method = RequestMethod.POST)
     public Address update(@RequestParam int addressId, @RequestParam("name") String street, @RequestParam("city") String city, @RequestParam("state") String state) {
         return addressService.update(addressId, street, city, state);
     }
 
-    @RequestMapping(value = "/product/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/address/{id}", method = RequestMethod.DELETE)
     public boolean delete(@RequestParam int addressId) {
         return addressService.delete(addressId);
     }

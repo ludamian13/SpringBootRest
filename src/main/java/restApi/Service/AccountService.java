@@ -1,5 +1,6 @@
 package restApi.Service;
 
+import restApi.Exceptions.NotFoundException;
 import restApi.Model.Account;
 import restApi.Model.Address;
 import restApi.repository.AccountRepository;
@@ -19,7 +20,11 @@ public class AccountService {
     }
 
     public Account show(int accountId) {
-        return accountRepository.findOne(accountId);
+        Account account = accountRepository.findOne(accountId);
+
+        verifyAccount(account);
+
+        return account;
     }
 
     public Account create(String name, String email, String street, String city, String state) {
@@ -34,14 +39,27 @@ public class AccountService {
 
     public Account update(int accountId, String name, String email) {
         Account account = accountRepository.findOne(accountId);
+
+        verifyAccount(account);
+
         account.setName(name);
         account.setEmail(email);
         return accountRepository.save(account);
     }
 
     public boolean delete(int accountId) {
+        Account account = accountRepository.findOne(accountId);
+
+        verifyAccount(account);
+
         accountRepository.delete(accountId);
         return true;
+    }
+
+    private void verifyAccount(Account account) {
+        if (account == null) {
+            throw new NotFoundException("No account found with this id");
+        }
     }
 
 

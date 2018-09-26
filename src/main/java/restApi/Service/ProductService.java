@@ -2,6 +2,7 @@ package restApi.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import restApi.Exceptions.NotFoundException;
 import restApi.Model.Account;
 import restApi.Model.Product;
 import restApi.repository.ProductRepository;
@@ -19,6 +20,10 @@ public class ProductService {
     }
 
     public Product show(int productId) {
+        Product product = productRepository.findOne(productId);
+
+        verifyProduct(product);
+
         return productRepository.findOne(productId);
     }
 
@@ -28,13 +33,26 @@ public class ProductService {
 
     public Product update(int productId, String name, int price) {
         Product product = productRepository.findOne(productId);
+
+        verifyProduct(product);
+
         product.setName(name);
         product.setPrice(price);
         return productRepository.save(product);
     }
 
     public boolean delete(int productId) {
+        Product product = productRepository.findOne(productId);
+
+        verifyProduct(product);
+
         productRepository.delete(productId);
         return true;
+    }
+
+    private void verifyProduct(Product product) {
+        if (product == null) {
+            throw new NotFoundException("No product found with this id");
+        }
     }
 }
